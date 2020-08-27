@@ -1,5 +1,5 @@
 
-export const handleAndy = (voiceChannel, messageParts) => {
+const handleAndy = (voiceChannel, messageParts) => {
   voiceChannel.join().then(connection => {
     let dispatcher
     switch (messageParts[1]) {
@@ -36,6 +36,9 @@ export const handleAndy = (voiceChannel, messageParts) => {
       case 'shitty':
         dispatcher = connection.play('./Andy/youre_fuckign_shitty_at_the_game_dude_wtf.mp3')
         break
+      default:
+        console.log(messageParts[1] + ' is not a valid command')
+        break
     }
     dispatcher.on("end", end => {
       voiceChannel.leave()
@@ -43,7 +46,7 @@ export const handleAndy = (voiceChannel, messageParts) => {
   }).catch((err) => console.log(err))
 }
 
-export const handleMatt = (voiceChannel, messageParts) => {
+const handleMatt = (voiceChannel, messageParts) => {
     voiceChannel.join().then(connection => {
       let dispatcher
       switch (messageParts[1]) {
@@ -59,9 +62,53 @@ export const handleMatt = (voiceChannel, messageParts) => {
         case 'right':
           dispatcher = connection.play('./Matt/Matt_totheright.mp3')
           break
+        default:
+          console.log(messageParts[1] + ' is not a valid command')
+          break
       }
       dispatcher.on("end", end => {
         voiceChannel.leave()
       })
     }).catch((err) => console.log(err))
+}
+
+const handleNoah = (voiceChannel, messageParts) => {
+  voiceChannel.join().then(connection => {
+    let dispatcher
+    switch (messageParts[1]) {
+      case 'ohgod':
+        dispatcher = connection.play('./Noah/noah_ohgod.mp3')
+        break
+      default:
+        console.log(messageParts[1] + ' is not a valid command')
+        break
+    }
+    dispatcher.on("end", end => {
+      voiceChannel.leave()
+    })
+  }).catch((err) => console.log(err))
+}
+
+const common = (voiceChannel, messageParts) => {
+  voiceChannel.join().then(connection => {
+    let dispatcher
+    switch (messageParts[0]) {
+      case 'bongrip':
+        dispatcher = connection.play('./Common/bongrip.mp3')
+        break
+      case 'lightup':
+        dispatcher = connection.play('./Common/lighting_up.mp3')
+        break
+    }
+    dispatcher.on("end", end => {
+      voiceChannel.leave()
+    })
+  }).catch((err) => console.log(err))
+}
+
+module.exports = {
+  handleAndy,
+  handleMatt,
+  handleNoah,
+  common
 }
