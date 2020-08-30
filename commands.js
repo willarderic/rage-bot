@@ -89,6 +89,40 @@ const handleNoah = (voiceChannel, messageParts) => {
   }).catch((err) => console.log(err))
 }
 
+const handleCaleb = (voiceChannel, messageParts) => {
+  voiceChannel.join().then(connection => {
+    let dispatcher
+    switch (messageParts[1]) {
+      case laugh:
+        dispatcher = connection.play('./Caleb/laugh.mp3')
+        break
+      default:
+        console.log(messageParts[1] + ' is not a valid command')
+        break
+    }
+    dispatcher.on("end", end => {
+      voiceChannel.leave()
+    })
+  }).catch((err) => console.log(err))
+}
+
+const handleBoys = (voiceChannel, messageParts) => {
+  voiceChannel.join().then(connection => {
+    let dispatcher
+    switch (messageParts[1]) {
+      case 'warm':
+        dispatcher = connection.play('./Boys/warm.mp3')
+        break
+      default:
+        console.log(messageParts[1] + ' is not a valid command')
+        break
+    }
+    dispatcher.on("end", end => {
+      voiceChannel.leave()
+    })
+  }).catch((err) => console.log(err))
+}
+
 const common = (voiceChannel, messageParts) => {
   voiceChannel.join().then(connection => {
     let dispatcher
@@ -98,9 +132,6 @@ const common = (voiceChannel, messageParts) => {
         break
       case 'lightup':
         dispatcher = connection.play('./Common/lighting_up.mp3')
-        break
-      case 'warm':
-        dispatcher = connection.play('./Common/warm.mp3')
         break
     }
     dispatcher.on("end", end => {
@@ -113,5 +144,7 @@ module.exports = {
   handleAndy,
   handleMatt,
   handleNoah,
+  handleCaleb,
+  handleBoys,
   common
 }

@@ -38,6 +38,12 @@ bot.on('message', async (msg) => {
           case 'noah':
             commands.handleNoah(voiceChannel, messageParts)
             break
+          case 'caleb':
+            commands.handleCaleb(voiceChannel, messageParts)
+            break
+          case 'boys':
+            commands.handleBoys(voiceChannel, messageParts)
+            break
           default:
             commands.common(voiceChannel, messageParts)
             break
