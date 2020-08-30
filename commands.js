@@ -79,6 +79,24 @@ const handleNoah = (voiceChannel, messageParts) => {
       case 'ohgod':
         dispatcher = connection.play('./Noah/noah_ohgod.mp3')
         break
+      case 'communists':
+        dispatcher = connection.play('./Noah/communists.mp3')
+        break
+      case 'fuckthisgame':
+        dispatcher = connection.play('./Noah/fuckthisgame.mp3')
+        break
+      case 'moan':
+        dispatcher = connection.play('./Noah/moan.mp3')
+        break
+      case 'shot':
+        dispatcher = connection.play('./Noah/shot.mp3')
+        break
+      case 'why':
+        dispatcher = connection.play('./Noah/why.mp3')
+        break
+      case 'holes':
+        dispatcher = connection.play('./Noah/littleholes.mp3')
+        break
       default:
         console.log(messageParts[1] + ' is not a valid command')
         break
