@@ -27,25 +27,24 @@ bot.on('message', async (msg) => {
       // get the correct voice channel
       const voiceChannel = msg.member.voice.channel
 
-      if (!voiceChannel) {
+      if (voiceChannel) {
+        switch (messageParts[0]) {
+          case 'andy':
+            commands.handleAndy(voiceChannel, messageParts)
+            break
+          case 'matt':
+            commands.handleMatt(voiceChannel, messageParts)
+            break
+          case 'noah':
+            commands.handleNoah(voiceChannel, messageParts)
+            break
+          default:
+            commands.common(voiceChannel, messageParts)
+            break
+        }
+      } else {
         const textChannel = msg.channel
         await textChannel.send('You are not in a voice channel')
-        return
-      }
-
-      switch (messageParts[0]) {
-        case 'andy':
-          commands.handleAndy(voiceChannel, messageParts)
-          break
-        case 'matt':
-          commands.handleMatt(voiceChannel, messageParts)
-          break
-        case 'noah':
-          commands.handleNoah(voiceChannel, messageParts)
-          break
-        default:
-          commands.common(voiceChannel, messageParts)
-          break
       }
 
       isReady = true

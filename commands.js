@@ -99,6 +99,9 @@ const common = (voiceChannel, messageParts) => {
       case 'lightup':
         dispatcher = connection.play('./Common/lighting_up.mp3')
         break
+      case 'warm':
+        dispatcher = connection.play('./Common/warm.mp3')
+        break
     }
     dispatcher.on("end", end => {
       voiceChannel.leave()
