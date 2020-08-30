@@ -41,6 +41,9 @@ bot.on('message', async (msg) => {
           case 'caleb':
             commands.handleCaleb(voiceChannel, messageParts)
             break
+          case 'hayden':
+            commands.handleHayden(voiceChannel, messageParts)
+            break
           case 'boys':
             commands.handleBoys(voiceChannel, messageParts)
             break
