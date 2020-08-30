@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 const bot = new Discord.Client()
 const dotenv = require('dotenv')
-const commands = require('./commands')
+const fs = require('fs')
 
 // Get api key from environment variables
 dotenv.config()
@@ -10,11 +10,32 @@ dotenv.config()
 const prefix = '!'
 
 // boolean to block overlapping calls
-let isReady
+let isReady, commandMap, commonAudioCommands
 
-bot.on('ready', () => {
+async function getAudioCommands(path) {
+  const dir = await fs.promises.opendir(path)
+  const commandMap = {}
+  const commonAudioCommands = []
+  for await (const dirent of dir) {
+    if (dirent.isDirectory()) {
+      commandMap[dirent.name] = []
+      const subdir = await fs.promises.opendir(`${path}/${dirent.name}`)
+      for await (const subdirent of subdir) {
+        commandMap[dirent.name].push(subdirent.name.split('.')[0])
+      }
+    } else {
+      commonAudioCommands.push(dirent.name.split('.')[0])
+    }
+  }
+  return [commandMap, commonAudioCommands]
+}
+
+bot.on('ready', async () => {
   console.log(`Logged in as ${bot.user.tag}!`)
   isReady = true
+  commandLists = await getAudioCommands('./audio').catch(console.error)
+  commandMap = commandLists[0]
+  commonAudioCommands = commandLists[1]
 });
 
 bot.on('message', async (msg) => {
@@ -28,28 +49,21 @@ bot.on('message', async (msg) => {
       const voiceChannel = msg.member.voice.channel
 
       if (voiceChannel) {
-        switch (messageParts[0]) {
-          case 'andy':
-            commands.handleAndy(voiceChannel, messageParts)
-            break
-          case 'matt':
-            commands.handleMatt(voiceChannel, messageParts)
-            break
-          case 'noah':
-            commands.handleNoah(voiceChannel, messageParts)
-            break
-          case 'caleb':
-            commands.handleCaleb(voiceChannel, messageParts)
-            break
-          case 'hayden':
-            commands.handleHayden(voiceChannel, messageParts)
-            break
-          case 'boys':
-            commands.handleBoys(voiceChannel, messageParts)
-            break
-          default:
-            commands.common(voiceChannel, messageParts)
-            break
+        let dispatcher
+        if (Object.keys(commandMap).includes(messageParts[0])) {
+          if (messageParts[1] === 'help') {
+            msg.channel.send('Commands for ' + messageParts[0] + ' are: ' + commandMap[messageParts[0]].join(', '))
+          } else {
+            const connection = await voiceChannel.join()
+            dispatcher = connection.play(`./audio/${messageParts[0]}/${messageParts[1]}.mp3`)
+          }
+        } else if (commonAudioCommands.includes(messageParts[0])) {
+          const connection = await voiceChannel.join()
+          dispatcher = connection.play(`./audio/${messageParts[0]}.mp3`)
+        } else if (messageParts[0] === 'help') {
+          msg.channel.send('Common commands are: ' + commonAudioCommands.join(', '))
+        } else {
+          console.log('Did not recognize command ' + messageParts)
         }
       } else {
         const textChannel = msg.channel
