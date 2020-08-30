@@ -111,7 +111,7 @@ const handleCaleb = (voiceChannel, messageParts) => {
   voiceChannel.join().then(connection => {
     let dispatcher
     switch (messageParts[1]) {
-      case laugh:
+      case 'laugh':
         dispatcher = connection.play('./Caleb/laugh.mp3')
         break
       default:
