@@ -2,6 +2,7 @@ const Discord = require('discord.js')
 const bot = new Discord.Client()
 const dotenv = require('dotenv')
 const fs = require('fs')
+const ytdl = require('ytdl-core')
 
 // Get api key from environment variables
 dotenv.config()
@@ -62,6 +63,16 @@ bot.on('message', async (msg) => {
           dispatcher = connection.play(`./audio/${messageParts[0]}.mp3`)
         } else if (messageParts[0] === 'help') {
           msg.channel.send('Common commands are: ' + commonAudioCommands.join(', '))
+          for (const key of Object.keys(commandMap)) {
+            msg.channel.send(`Commands for ${key} are: ` + commandMap[key].join(', '))
+          }
+        } else if (messageParts[0] === 'play') {
+          if (messageParts[0] && ytdl.validateURL(messageParts[1])) {
+            const connection = await voiceChannel.join()
+            dispater = connection.play(ytdl(messageParts[1], { filter: 'audioonly' }), { seek: 0, volume: 0.1 })
+          } else {
+            msg.channel.send('Not a valid youtube url')
+          }
         } else {
           console.log('Did not recognize command ' + messageParts)
         }

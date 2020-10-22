@@ -14,6 +14,7 @@
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
     "node-cron": "^1.2.1",
-    "node-opus": "^0.3.3"
+    "node-opus": "^0.3.3",
+    "ytdl-core": "^3.4.1"
   }
 }
