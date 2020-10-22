@@ -66,13 +66,6 @@ bot.on('message', async (msg) => {
           for (const key of Object.keys(commandMap)) {
             msg.channel.send(`Commands for ${key} are: ` + commandMap[key].join(', '))
           }
-        } else if (messageParts[0] === 'play') {
-          if (messageParts[0] && ytdl.validateURL(messageParts[1])) {
-            const connection = await voiceChannel.join()
-            dispater = connection.play(ytdl(messageParts[1], { filter: 'audioonly' }), { seek: 0, volume: 0.1 })
-          } else {
-            msg.channel.send('Not a valid youtube url')
-          }
         } else {
           console.log('Did not recognize command ' + messageParts)
         }
